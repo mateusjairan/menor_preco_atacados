@@ -1,7 +1,29 @@
 # Ambiente
 .env
+.env.*
+!.env.example
 .venv/
 venv/
+
+# Segredos e credenciais
+.streamlit/secrets.toml
+secrets.toml
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.token
+*.secret
+credentials.json
+service-account*.json
+.pypirc
+.netrc
+.aws/
+.ssh/
+id_rsa
+id_ed25519
 
 # Python
 __pycache__/
@@ -13,8 +35,12 @@ __pycache__/
 htmlcov/
 *.log
 
-# Streamlit
-.streamlit/secrets.toml
+# Documento interno
+AGENTS.md
+
+# Assets locais (screenshot, GIF e vídeo)
+assets/
+docs/assets/
 
 # Editores / SO
 .vscode/
