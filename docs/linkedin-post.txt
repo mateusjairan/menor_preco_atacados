@@ -1,28 +1,12 @@
-Radar de Preço NE: comparando o preço real dos supermercados do Nordeste
+Toda vez que eu vou ao mercado, bate a mesma dúvida: o pacote de 500 g por R$ 4,99 é mais barato que o de 1 kg por R$ 8,99?
 
-Já perdi tempo tentando descobrir se R$ 4,99 em uma embalagem de 500 g era mais barato que R$ 8,99 em 1 kg. O preço da etiqueta, sozinho, não responde.
+A etiqueta não responde. Foi dessa dúvida que nasceu o Radar de Preço NE, um painel que compara o preço por kg, litro ou unidade entre sete redes do Nordeste.
 
-Foi por isso que criei o Radar de Preço NE: um painel que compara o preço por kg, litro ou unidade entre redes do Nordeste e mostra onde o mesmo produto está realmente mais barato.
+A ideia é simples: mostrar onde o mesmo produto está realmente mais barato, inclusive quando a embalagem é um multipack ou um kit. O painel também mostra a cobertura das redes, a economia do mesmo produto e a qualidade dos dados.
 
-O que o projeto faz:
-• Busca simultânea em 7 redes
-• Normalização de tamanho e preço unitário, incluindo multipacks e kits
-• Matching por EAN + similaridade de nome
-• Ranking justo pelo conteúdo da embalagem
-• Leitura de mercado com cobertura, economia e qualidade dos dados
-• Exportação CSV
+Para construir isso, usei Python, Streamlit, Pandas, RapidFuzz e Altair, além de scrapers simultâneos. Também entraram Pytest, Ruff, Black e GitHub Actions para manter o projeto testado e organizado.
 
-Tecnologias usadas:
-• Python 3.11+
-• Streamlit
-• Pandas
-• RapidFuzz
-• Altair
-• Scrapers simultâneos com coleta paralela
-• Pytest, Ruff e Black
-• GitHub Actions para CI
-
-Também cuidei da parte que não aparece no print: arquitetura com adapters por plataforma, cache, tratamento de falhas por fonte, normalização de unidades e testes offline.
+A parte que não aparece no print deu bastante trabalho: arquitetura com adapters por plataforma, cache, tratamento de falhas por fonte e normalização de unidades.
 
 O projeto está aberto para feedback e contribuições:
 Repositório: [link do repositório]
