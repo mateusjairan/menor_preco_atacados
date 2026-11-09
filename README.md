@@ -4,6 +4,8 @@ Comparador de preços de supermercado para redes do Nordeste. Digite um produto
 e veja onde está mais barato, com comparação justa pelo **conteúdo total da
 embalagem** — inclusive quando ela é um multipack.
 
+![Painel do Radar de Preço NE](docs/screenshot.png)
+
 ## O que o painel entrega
 
 - Busca em cinco redes de atacado + Grupo Mateus e Villefort (Tier B experimental).
