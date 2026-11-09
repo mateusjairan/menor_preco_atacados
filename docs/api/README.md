@@ -8,6 +8,7 @@ Status de cada fonte. Atualize ao descobrir/validar um endpoint.
 | Símbolo | Significado |
 |---|---|
 | ✅ | Validado, em produção |
+| 🧪 | Experimental, atrás de feature flag |
 | 🔬 | Fluxo identificado, não homologado |
 | ⛔ | Bloqueado ou fora de escopo |
 
@@ -59,17 +60,19 @@ Detalhes do fluxo e do bloqueio de homologação em [`vipcommerce.md`](vipcommer
   - Não versionar token.
   - Feature flag `ENABLE_REVERSE_API`.
 
-### Grupo Mateus (Mateus, Mix, Camiño)
+### Grupo Mateus (Mateus Mais)
 
-- **Arquitetura:** SPA Angular + gateway próprio
-- **Hosts identificados no bundle:**
-  - `gateway.mateusmais.com.br`
-  - `app.mateusmais.com.br`
-  - `cart-v2.mateusmais.com.br`
-  - `plataforma.mateusmais.com.br`
-- **Busca:** serviço próprio (`searchService: "meilisearch"`)
-- **Status:** 🔬 (requer RE adicional)
-- **Próximo passo:** capturar a chamada de busca no DevTools e reproduzir com headers mínimos.
+Detalhes de request/response em [`mateus.md`](mateus.md).
+
+- **Arquitetura:** SPA Angular + API anônima em `app.mateusmais.com.br`
+- **Busca:** `POST /api/products/internal/v1/service/priority` com serviço
+  `meilisearch` e filtro por `market_id`
+- **Loja:** resolvida por `GET /api/products/market-category-group/`; padrão
+  São Luís/MA, configurável por ambiente
+- **Auth:** nenhuma
+- **Campos de preço:** `hits[].sale_price`, `hits[].price`, `hits[].low_price`
+- **Status:** ✅ experimental (Tier B, `ENABLE_REVERSE_API`)
+- **Riscos:** endpoint não documentado, preço por loja, mudanças no SPA
 
 ---
 
@@ -77,7 +80,7 @@ Detalhes do fluxo e do bloqueio de homologação em [`vipcommerce.md`](vipcommer
 
 | Rede | Motivo | Status |
 |---|---|---|
-| Assaí | Home 200 com `curl-cffi` (era 403); catálogo sem endpoint mapeado | ⛔ v1 |
+| Assaí | Sem catálogo público de produtos; `/busca` é busca de conteúdo e compra online via app/Rappi/Uber. Ver [`assai.md`](assai.md) | ⛔ v1 |
 | Extra | Home 200 com `curl-cffi`; stack Next.js/Casas Bahia, fora do escopo | ⛔ v1 |
 | Carrefour | Home 200; API de catálogo 403/503 | ⛔ v1 |
 | GPA (Pão de Açúcar/Bompreço) | API privada Next.js, preço por CEP; Bompreço indisponível | ⛔ v1 |

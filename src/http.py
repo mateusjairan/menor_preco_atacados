@@ -107,11 +107,12 @@ class HttpClient:
         separator = "&" if "?" in url else "?"
         return f"{url}{separator}{query}"
 
-    def get_json(
-        self, url: str, params: dict[str, Any] | None = None
+    def _request_json(
+        self,
+        url: str,
+        params: dict[str, Any] | None,
+        send: Callable[[str], Any],
     ) -> list[dict[str, Any]] | dict[str, Any]:
-        """GET + JSON com retry em 429/5xx e fallback de impersonation."""
-
         target = self._build_url(url, params)
         attempts = 0
         rotated = False
@@ -119,12 +120,7 @@ class HttpClient:
         while True:
             self._throttle()
             try:
-                response = self._get_session().get(
-                    target,
-                    headers=self.headers,
-                    timeout=self.timeout,
-                    allow_redirects=True,
-                )
+                response = send(target)
             except Timeout as exc:
                 raise HttpError("tempo esgotado") from exc
             except RequestException as exc:
@@ -154,6 +150,42 @@ class HttpClient:
                 return response.json()
             except (ValueError, TypeError) as exc:
                 raise HttpError("resposta inesperada") from exc
+
+    def get_json(
+        self, url: str, params: dict[str, Any] | None = None
+    ) -> list[dict[str, Any]] | dict[str, Any]:
+        """GET + JSON com retry em 429/5xx e fallback de impersonation."""
+
+        return self._request_json(
+            url,
+            params,
+            lambda target: self._get_session().get(
+                target,
+                headers=self.headers,
+                timeout=self.timeout,
+                allow_redirects=True,
+            ),
+        )
+
+    def post_json(
+        self,
+        url: str,
+        body: dict[str, Any] | list[Any],
+        params: dict[str, Any] | None = None,
+    ) -> list[dict[str, Any]] | dict[str, Any]:
+        """POST JSON com o mesmo retry/fallback do GET."""
+
+        return self._request_json(
+            url,
+            params,
+            lambda target: self._get_session().post(
+                target,
+                headers=self.headers,
+                json=body,
+                timeout=self.timeout,
+                allow_redirects=True,
+            ),
+        )
 
     def close(self) -> None:
         if self._session is not None:

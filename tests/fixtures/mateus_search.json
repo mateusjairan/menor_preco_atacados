@@ -1,0 +1,81 @@
+{
+  "hits": [
+    {
+      "objectID": "produto-1",
+      "name": "Leite em Pó Integral Piracanjuba 200g",
+      "brand": "PIRACANJUBA",
+      "barcode": "7898215152330",
+      "price": 7.39,
+      "sale_price": 6.79,
+      "measure": 200,
+      "measure_type": "G",
+      "amount_in_stock": 3765,
+      "for_sale": true,
+      "is_active": true,
+      "market_id": "market-1",
+      "url": "https://app.mateusmais.com.br/api/products/produto-1",
+      "image": "https://example.test/leite-em-po.png",
+      "small_image": "https://example.test/leite-em-po-small.png"
+    },
+    {
+      "objectID": "produto-2",
+      "name": "Leite Longa Vida Natville Integral 1L",
+      "brand": "NATVILLE",
+      "barcode": "7898387120380",
+      "price": 7.59,
+      "sale_price": 7.59,
+      "measure": 1,
+      "measure_type": "L",
+      "amount_in_stock": 20,
+      "for_sale": true,
+      "is_active": true,
+      "market_id": "market-1",
+      "image": "https://example.test/leite-1l.png"
+    },
+    {
+      "objectID": "produto-3",
+      "name": "Leite Condensado Tirol 395g",
+      "brand": "TIROL",
+      "barcode": "7896256604962",
+      "price": 6.49,
+      "sale_price": 6.49,
+      "measure": 395,
+      "measure_type": "G",
+      "amount_in_stock": 0,
+      "for_sale": true,
+      "is_active": true,
+      "market_id": "market-1"
+    },
+    {
+      "objectID": "produto-4",
+      "name": "Leite sem estoque 1L",
+      "brand": "TESTE",
+      "barcode": "7890000000000",
+      "price": 5.99,
+      "sale_price": 5.99,
+      "measure": 1,
+      "measure_type": "L",
+      "amount_in_stock": 10,
+      "for_sale": false,
+      "is_active": true,
+      "market_id": "market-1"
+    },
+    {
+      "objectID": "produto-5",
+      "name": "Refrigerante Coca-Cola 2L",
+      "brand": "COCA-COLA",
+      "barcode": "7894900011517",
+      "price": 8.99,
+      "sale_price": 8.99,
+      "measure": null,
+      "measure_type": null,
+      "amount_in_stock": 50,
+      "for_sale": true,
+      "is_active": true,
+      "market_id": "market-1"
+    }
+  ],
+  "nbPages": 1,
+  "nbHits": 5,
+  "page": 0
+}

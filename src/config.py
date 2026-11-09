@@ -57,8 +57,10 @@ class ChainConfig:
     name: str
     slug: str
     base_url: str | None
-    access: str  # "public" | "reverse"
+    access: str  # "public" | "reverse" | "unsupported"
     region: str = ""
+    platform: str = "vtex"
+    implemented: bool = True
 
 
 # --- Tier A: API pública VTEX (o produto) -----------------------------------
@@ -102,12 +104,40 @@ TIER_A: tuple[ChainConfig, ...] = (
 
 # --- Tier B: API reversa (experimental, desligada por padrão) ----------------
 TIER_B: tuple[ChainConfig, ...] = (
-    ChainConfig("Pinheiro (Bom Vizinho)", "pinheiro", None, "reverse", "CE"),
-    ChainConfig("Nordestão", "nordestao", None, "reverse", "RN"),
-    ChainConfig("Diniz", "diniz", None, "reverse", "CE"),
+    ChainConfig(
+        "Pinheiro (Bom Vizinho)",
+        "pinheiro",
+        None,
+        "reverse",
+        "CE",
+        "vipcommerce",
+        False,
+    ),
+    ChainConfig("Nordestão", "nordestao", None, "reverse", "RN", "vipcommerce", False),
+    ChainConfig("Diniz", "diniz", None, "reverse", "CE", "vipcommerce", False),
+    ChainConfig(
+        "Grupo Mateus",
+        "mateus",
+        "https://www.mateusmais.com.br",
+        "reverse",
+        "MA, PI, CE, PE, BA",
+        "mateus",
+    ),
 )
 
-CHAINS: tuple[ChainConfig, ...] = TIER_A + TIER_B
+# --- Tier C: sem catálogo público (não entra no pool de busca) --------------
+TIER_C: tuple[ChainConfig, ...] = (
+    ChainConfig(
+        "Assaí",
+        "assai",
+        "https://www.assai.com.br",
+        "unsupported",
+        "Nacional/NE",
+        "assai",
+    ),
+)
+
+CHAINS: tuple[ChainConfig, ...] = TIER_A + TIER_B + TIER_C
 CHAINS_BY_SLUG: dict[str, ChainConfig] = {chain.slug: chain for chain in CHAINS}
 
 # --- Flags e limites ---------------------------------------------------------
@@ -116,6 +146,12 @@ HTTP_TIMEOUT: float = _env_float("HTTP_TIMEOUT", 10.0)
 MAX_PAGES: int = _env_int("MAX_PAGES", 2)
 IMPERSONATE: str = os.getenv("IMPERSONATE", "chrome").strip() or "chrome"
 CONTACT_EMAIL: str = os.getenv("CONTACT_EMAIL", "contato@seudominio.com.br").strip()
+
+# Praça padrão do Grupo Mateus (São Luís/MA). Ajuste por ambiente se necessário.
+MATEUS_CITY_CODE: str = os.getenv("MATEUS_CITY_CODE", "2111300").strip()
+MATEUS_LATITUDE: float = _env_float("MATEUS_LATITUDE", -2.5157923, minimum=-90.0)
+MATEUS_LONGITUDE: float = _env_float("MATEUS_LONGITUDE", -44.2452414, minimum=-180.0)
+MATEUS_MARKET_ID: str = os.getenv("MATEUS_MARKET_ID", "").strip()
 
 USER_AGENT = f"RadarPrecoNE/0.1 (+{CONTACT_EMAIL})"
 IMPERSONATE_FALLBACKS: tuple[str, ...] = ("chrome110", "safari17_0")

@@ -11,6 +11,7 @@ from time import perf_counter
 
 from . import config
 from .adapters.base import Adapter, AdapterError
+from .adapters.mateus import MateusAdapter
 from .adapters.vipcommerce import VipCommerceAdapter
 from .adapters.vtex import VtexAdapter
 from .http import HttpError
@@ -44,12 +45,22 @@ def build_adapters(
         wanted = set(chain_slugs)
         configs = [chain for chain in configs if chain.slug in wanted]
 
+    adapter_classes = {
+        "vtex": VtexAdapter,
+        "mateus": MateusAdapter,
+        "vipcommerce": VipCommerceAdapter,
+    }
     adapters: list[Adapter] = []
     for chain in configs:
-        if chain.access == "public":
-            adapters.append(VtexAdapter(chain))
-        else:
-            adapters.append(VipCommerceAdapter(chain))
+        if not chain.implemented:
+            continue
+        adapter_class = adapter_classes.get(chain.platform)
+        if adapter_class is None:
+            logger.error(
+                "Plataforma desconhecida para %s: %s", chain.slug, chain.platform
+            )
+            continue
+        adapters.append(adapter_class(chain))
     return adapters
 
 

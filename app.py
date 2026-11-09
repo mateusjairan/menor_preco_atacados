@@ -183,6 +183,8 @@ def _render_search() -> None:
                 "Incluir APIs reversas (experimental)",
                 value=False,
                 key="incluir_reverse",
+                help="Inclui Grupo Mateus (experimental) e adapters VipCommerce "
+                "ainda não homologados.",
             )
         else:
             st.caption("Tier B (APIs reversas) desligado por padrão.")

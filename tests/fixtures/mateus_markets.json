@@ -1,0 +1,27 @@
+[
+  {
+    "name": "Mercado",
+    "markets": [
+      {
+        "id": "market-1",
+        "name": "Supermercado Mateus Cohama",
+        "online_sell": true
+      },
+      {
+        "id": "market-2",
+        "name": "Loja fechada",
+        "online_sell": false
+      }
+    ]
+  },
+  {
+    "name": "Eletro",
+    "markets": [
+      {
+        "id": "eletro-1",
+        "name": "Eletro Mateus",
+        "online_sell": true
+      }
+    ]
+  }
+]

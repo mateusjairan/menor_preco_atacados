@@ -30,11 +30,12 @@ embalagem** — inclusive quando ela é um multipack.
 | Tier | Redes | Situação |
 |---|---|---|
 | A — API pública VTEX | GBarbosa, Mercantil Atacado, Hiperideal, Atacadão, Atacadão Treichel | Homologado |
-| B — API reversa | Pinheiro, Nordestão, Diniz | Experimental, desligado por padrão |
-| C — fora do escopo | Assaí, Extra, Carrefour, GPA, Novo Atacarejo, Recibom | Não suportado na v1 |
+| B — API reversa | Grupo Mateus; Pinheiro, Nordestão e Diniz (VipCommerce em pesquisa) | Experimental, desligado por padrão |
+| C — fora do escopo | Assaí (sem catálogo público), Extra, Carrefour, GPA, Novo Atacarejo, Recibom | Não suportado na v1 |
 
-Validação ao vivo em 09/11/2026: cinco redes, 214 itens para
-`leite integral 1l`, cerca de 3,1 s em cache frio.
+Validação ao vivo em 09/11/2026: cinco redes VTEX, 214 itens para
+`leite integral 1l`, cerca de 3,1 s em cache frio. Grupo Mateus validado na
+loja Cohama (São Luís/MA) com 22 itens para `coca cola`.
 
 ## Como rodar
 
@@ -61,9 +62,10 @@ O caminho mais simples é o **Streamlit Community Cloud**:
 2. Selecione `app.py` como arquivo principal.
 3. Mantenha `requirements.txt` na raiz.
 4. Configure as variáveis de ambiente no painel.
-5. Teste as cinco redes: o egress compartilhado do Streamlit Cloud pode ser
+5. Teste as cinco redes VTEX: o egress compartilhado do Streamlit Cloud pode ser
    bloqueado por alguma fonte. Se isso acontecer, remova a rede ou use um
-   container próprio com egress estável.
+   container próprio com egress estável. O Grupo Mateus fica atrás de
+   `ENABLE_REVERSE_API`.
 
 Não tente hospedar Streamlit no GitHub Pages; ele exige um servidor Python.
 
@@ -84,11 +86,15 @@ Copie `.env.example` para `.env` ou defina as variáveis no ambiente:
 
 | Variável | Padrão | Função |
 |---|---|---|
-| `ENABLE_REVERSE_API` | `false` | Liga adapters Tier B (não homologados) |
+| `ENABLE_REVERSE_API` | `false` | Liga adapters Tier B, incluindo Grupo Mateus |
 | `HTTP_TIMEOUT` | `10` | Timeout por request, em segundos |
 | `MAX_PAGES` | `2` | Páginas de 50 itens por rede |
 | `IMPERSONATE` | `chrome` | Perfil TLS do `curl_cffi` |
 | `CONTACT_EMAIL` | `contato@seudominio.com.br` | Contato no `User-Agent` |
+| `MATEUS_CITY_CODE` | `2111300` | Cidade usada para resolver a loja Mateus |
+| `MATEUS_LATITUDE` | `-2.5157923` | Latitude da praça Mateus |
+| `MATEUS_LONGITUDE` | `-44.2452414` | Longitude da praça Mateus |
+| `MATEUS_MARKET_ID` | vazio | Força uma loja específica do Mateus |
 
 ## Como funciona
 
@@ -101,11 +107,13 @@ flowchart LR
     A --> H[Hiperideal]
     A --> AT[Atacadão]
     A --> T[Treichel]
+    A -.-> GM[Grupo Mateus]
     A --> R[Matching + Ranking]
     R --> S
 ```
 
-1. **Coleta** — um adapter por plataforma (VTEX para Tier A), em paralelo com
+1. **Coleta** — um adapter por plataforma, escolhido por
+   `ChainConfig.platform` (VTEX, Mateus Mais e VipCommerce), em paralelo com
    `ThreadPoolExecutor`. Uma falha vira `ChainResult.error` e não derruba a busca.
 2. **Normalização** — `units.py` extrai o conteúdo total do nome e calcula
    `preço / conteúdo` na unidade base. Pack sem quantidade explícita fica sem
@@ -131,10 +139,11 @@ src/matching.py              EAN + fuzzy + agrupamento
 src/insights.py              cobertura, comparação e insights
 src/aggregator.py            orquestração paralela + ranking
 src/adapters/vtex.py         Tier A
+src/adapters/mateus.py       Tier B (Mateus Mais)
 src/adapters/vipcommerce.py  Tier B (placeholder até homologação)
 tests/                       testes offline e fixtures
 docs/api/                    registro de APIs descobertas
-docs/assets/                 screenshot do painel
+docs/assets/                 screenshot e vídeo do painel
 ```
 
 ## Limitações conhecidas
@@ -145,7 +154,10 @@ docs/assets/                 screenshot do painel
 - Itens sem tamanho identificado aparecem na tabela, mas ficam fora do ranking
   por unidade.
 - Correspondências fuzzy são sinalizadas; confira o produto antes de comprar.
-- Tier B permanece desligado até revisão de ToS e homologação.
+- Tier B permanece desligado por padrão; o Grupo Mateus é experimental e requer
+  revisão de ToS antes de uso público.
+- Assaí não expõe catálogo público de produtos; a compra online é via app ou
+  parceiros de delivery.
 
 ## Compliance
 
@@ -157,6 +169,8 @@ docs/assets/                 screenshot do painel
   contornada.
 - Nenhum token, cookie ou segredo no repositório.
 - Nenhum dado pessoal é armazenado.
+- O Grupo Mateus usa endpoint anônimo do próprio SPA, atrás de feature flag;
+  não há login, token de cliente ou contorno de proteção.
 
 ## Roadmap
 
@@ -164,7 +178,8 @@ docs/assets/                 screenshot do painel
 - [ ] Comparação de cesta completa.
 - [ ] Páginas públicas por produto, com SEO.
 - [ ] API FastAPI e persistência em PostgreSQL.
-- [ ] Homologação de fontes Tier B, se os ToS permitirem.
+- [ ] Homologação das fontes VipCommerce (Pinheiro, Nordestão, Diniz), se os ToS permitirem.
+- [ ] Adapter do Assaí somente com API de parceiro/feed oficial.
 
 ## Licença
 

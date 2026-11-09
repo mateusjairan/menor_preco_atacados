@@ -69,13 +69,19 @@ def test_build_adapters_default_is_tier_a_only(monkeypatch):
 def test_build_adapters_reverse_only_when_flag_enabled(monkeypatch):
     monkeypatch.setattr(config, "ENABLE_REVERSE_API", True)
     adapters = build_adapters(include_reverse=True)
-    assert len(adapters) == 8
-    assert [a.slug for a in adapters[-3:]] == ["pinheiro", "nordestao", "diniz"]
+    assert len(adapters) == 6
+    assert [a.slug for a in adapters[-1:]] == ["mateus"]
+    assert all(a.slug not in {"pinheiro", "nordestao", "diniz"} for a in adapters)
 
 
 def test_chain_filter():
     adapters = build_adapters(chain_slugs=["gbarbosa", "treichel"])
     assert [adapter.slug for adapter in adapters] == ["gbarbosa", "treichel"]
+
+
+def test_unsupported_assai_is_not_built():
+    assert config.CHAINS_BY_SLUG["assai"].access == "unsupported"
+    assert build_adapters(chain_slugs=["assai"]) == []
 
 
 def test_rank_picks_best_unit_price(make_product):

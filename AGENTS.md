@@ -50,14 +50,14 @@ O valor do app não é "listar produtos": é **responder 'onde comprar mais bara
 | Pinheiro (Bom Vizinho) | CE | Plataforma VipCommerce | 🔬 pesquisar |
 | Nordestão | RN | Plataforma VipCommerce | 🔬 pesquisar |
 | Diniz | CE | Plataforma VipCommerce | 🔬 pesquisar |
+| Grupo Mateus | MA, PI, CE, PE, BA | Mateus Mais; busca anônima via Meilisearch | ✅ experimental |
 
 ### Tier C — não homologado
 
 | Rede | Motivo |
 |---|---|
-| Grupo Mateus | SPA Angular; catálogo via gateway/Meilisearch; exige RE adicional |
 | GPA (Pão de Açúcar/Bompreço) | API privada Next.js, preço por CEP |
-| Assaí | Home 200 com `curl-cffi`; catálogo sem endpoint mapeado |
+| Assaí | Site sem catálogo público de produtos; compra online via app/Rappi/Uber |
 | Extra | Home 200 com `curl-cffi`; stack Next.js/Casas Bahia, fora do escopo de supermercado |
 | Carrefour | Home 200; API de catálogo 403/503 |
 | Novo Atacarejo / Recibom | app-first, sem catálogo web estável |
@@ -95,8 +95,10 @@ radar-preco-ne/
 ├── docs/
 │   ├── api/
 │   │   ├── README.md           # registro de APIs descobertas
+│   │   ├── mateus.md           # request/response do Mateus Mais
+│   │   ├── assai.md            # limitação de catálogo
 │   │   └── vipcommerce.md      # request/response (sem segredos)
-│   └── assets/                 # screenshot do painel
+│   └── assets/                 # screenshot e vídeo do painel
 ├── src/
 │   ├── config.py               # CHAINS, flags, timeouts
 │   ├── models.py               # Product, ChainResult
@@ -104,6 +106,7 @@ radar-preco-ne/
 │   ├── adapters/
 │   │   ├── base.py
 │   │   ├── vtex.py             # Tier A
+│   │   ├── mateus.py           # Tier B (Mateus Mais)
 │   │   └── vipcommerce.py      # Tier B (flag)
 │   ├── units.py                # parsing de tamanho e preço unitário
 │   ├── matching.py             # EAN + fuzzy + agrupamento
@@ -116,7 +119,8 @@ radar-preco-ne/
 
 Regras:
 - `app.py` não faz HTTP.
-- Um adapter por plataforma, não por rede. VTEX cobre 5; VipCommerce cobre 3.
+- Um adapter por plataforma, não por rede. VTEX cobre 5; VipCommerce cobre 3; Mateus Mais tem adapter próprio.
+- `ChainConfig.platform` decide o adapter no `build_adapters()`.
 - Todo adapter devolve `list[Product]`.
 
 ---
@@ -231,7 +235,7 @@ GET {base_url}/api/catalog_system/pub/products/search?ft={termo}&_from=0&_to=49
 - 1–2 páginas por rede (50–100 itens).
 - **Espaços no `ft` devem ser `%20`, nunca `+`.** VTEX responde
   `400 Bad Request! Scripts are not allowed!` com `+` (validado em 09/11/2026).
-- Cliente: `curl_cffi` com `impersonate="chrome"` (ver 8.5).
+- Cliente: `curl_cffi` com `impersonate="chrome"` (ver 8.6).
 - Headers: `User-Agent` identificado, `Accept: application/json`, `Accept-Language: pt-BR`.
 - Preço: `items[].sellers[].commertialOffer.Price` (menor entre sellers com `AvailableQuantity > 0`).
 - `ean` em `items[].ean`; URL = `{base_url}/{linkText}/p`.
@@ -273,15 +277,25 @@ GET  {api}/org/{orgId}/...          # catálogo, busca, produto
 - Headers de tenant: `DomainKey` e `OrganizationId`, além de `sessao-id`.
 - O token é obtido pelo próprio app anônimo.
 
-**Status:** fluxo identificado, **não homologado**. Antes de codar, revisar ToS e confirmar que a chamada é anônima. Não versionar token. No v1 o adapter é um placeholder que levanta erro claro e só entra no pool com `ENABLE_REVERSE_API=true`.
+**Status:** fluxo identificado, **não homologado**. Antes de codar, revisar ToS e confirmar que a chamada é anônima. Não versionar token. No v1 o adapter é um placeholder com `implemented=False`; ele só entra no pool quando implementado e com `ENABLE_REVERSE_API=true`.
 
-### 8.4 Exemplo parcial — Grupo Mateus
+### 8.4 Grupo Mateus — implementado como Tier B
 
-- SPA Angular; config em `chunk-*.js` com `apiGatewayUrl`, `cartV2ApiUrl`, `plataformaApiUrl`, `app.mateusmais.com.br`.
-- Busca aparenta usar serviço próprio (`searchService: "meilisearch"`) + gateway.
-- **Status:** exige RE adicional. Não entra no v1.
+- SPA Angular (Mateus Mais) com API anônima em `https://app.mateusmais.com.br`.
+- Praça resolvida via `GET /api/products/market-category-group/?latitude=...&longitude=...&city_code=...`.
+- Busca via `POST /api/products/internal/v1/service/priority` com `service="meilisearch"`, `market_priority` e filtros `market_id` + `for_sale`.
+- Campos usados: `hits[].name`, `price`, `sale_price`, `barcode`, `measure`, `measure_type`, `objectID`, `image`, `amount_in_stock`.
+- Loja padrão: São Luís/MA; configurável por `MATEUS_CITY_CODE`, `MATEUS_LATITUDE`, `MATEUS_LONGITUDE` e `MATEUS_MARKET_ID`.
+- **Status:** ✅ experimental, atrás de `ENABLE_REVERSE_API`. Revisar ToS antes de uso público.
 
-### 8.5 Cliente HTTP: curl-cffi
+### 8.5 Assaí
+
+- `/busca` é busca de conteúdo do site, não catálogo de produtos.
+- `/ofertas` é encarte, sem preço por produto.
+- Compra online disponível via app Meu Assaí/Rappi/Uber, sem catálogo web público anônimo.
+- **Status:** ⛔ não suportado sem API de parceiro/login.
+
+### 8.6 Cliente HTTP: curl-cffi
 
 `curl_cffi` reproduz o handshake TLS/JA3 de um navegador real. É o **cliente padrão do projeto**, inclusive no Tier A.
 
@@ -308,7 +322,7 @@ r = session.get(url, timeout=10, headers=HEADERS)
 
 Ou seja: fingerprint deixou de ser o bloqueio. **Captcha, challenge JS e login continuam fora de escopo.**
 
-### 8.6 Limites (inegociável)
+### 8.7 Limites (inegociável)
 
 - ✅ Reproduzir chamada anônima que o site já faz.
 - ✅ Usar `impersonate` para passar por checagem de TLS/fingerprint.
@@ -328,7 +342,7 @@ Se a API exigir login que o visitante não tem, **pare e pergunte**.
 - Uma falha não derruba a busca: `ChainResult.error`.
 - Mensagens curtas: "tempo esgotado", "bloqueio temporário", "instabilidade", "resposta inesperada".
 - Log INFO: rede, termo, status, itens, ms. Nunca payload completo.
-- `ENABLE_REVERSE_API=false` por padrão; se `true`, redes Tier B entram no pool.
+- `ENABLE_REVERSE_API=false` por padrão; se `true`, entram apenas redes Tier B com `implemented=True` (hoje, Grupo Mateus).
 - Timeout global da busca: 20s.
 
 ---
@@ -399,6 +413,7 @@ Se estourar: reduzir páginas antes de aumentar concorrência.
 - `matching.py`: mesmo EAN em redes diferentes; fuzzy 85 agrupa; 50 não agrupa; tamanhos diferentes nunca agrupam.
 - `vtex.py`: 206, múltiplos sellers, esgotado, EAN vazio.
 - `vipcommerce.py`: só com fixture; nunca chamada real no CI.
+- `mateus.py`: resolução de loja, busca, preço promocional, estoque, medida e fallback de tamanho.
 - `aggregator.py`: uma rede com erro não impede as outras.
 - `insights.py`: cobertura, comparação por grupo e leitura de mercado.
 - `app.py`: smoke test com `streamlit.testing.v1.AppTest`; a tabela não deve ter `Preço/un`.
@@ -451,6 +466,12 @@ HTTP_TIMEOUT=10
 MAX_PAGES=2
 IMPERSONATE=chrome
 CONTACT_EMAIL=contato@seudominio.com.br
+
+# Grupo Mateus (Tier B)
+MATEUS_CITY_CODE=2111300
+MATEUS_LATITUDE=-2.5157923
+MATEUS_LONGITUDE=-44.2452414
+MATEUS_MARKET_ID=
 ```
 
 ---

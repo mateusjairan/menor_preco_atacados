@@ -25,7 +25,14 @@ class FakeSession:
         self.closed = False
 
     def get(self, url, **kwargs):
-        self.calls.append({"url": url, **kwargs})
+        self.calls.append({"method": "GET", "url": url, **kwargs})
+        outcome = self.outcomes.pop(0)
+        if isinstance(outcome, Exception):
+            raise outcome
+        return outcome
+
+    def post(self, url, **kwargs):
+        self.calls.append({"method": "POST", "url": url, **kwargs})
         outcome = self.outcomes.pop(0)
         if isinstance(outcome, Exception):
             raise outcome
@@ -42,6 +49,17 @@ def _client(session: FakeSession, **kwargs) -> HttpClient:
         min_interval=0,
         **kwargs,
     )
+
+
+def test_post_json_sends_body():
+    session = FakeSession([FakeResponse(200, {"ok": True})])
+    client = _client(session)
+
+    result = client.post_json("https://example.test/search", {"query": "leite"})
+
+    assert result == {"ok": True}
+    assert session.calls[0]["method"] == "POST"
+    assert session.calls[0]["json"] == {"query": "leite"}
 
 
 def test_retries_429_then_succeeds(monkeypatch):
