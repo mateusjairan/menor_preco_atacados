@@ -11,7 +11,6 @@ from .matching import (
     similar_group_count,
 )
 from .models import ChainResult, Product
-from .units import format_unit_price
 
 
 def format_brl(value: float | None) -> str:
@@ -121,13 +120,12 @@ def market_insights(
         )
     else:
         insights.append(
-            f"{best.chain} lidera em {best.name} com "
-            f"{format_unit_price(best.unit_price, best.package_unit)}."
+            f"{best.chain} lidera em {best.name} com {format_brl(best.price)}."
         )
         if len(comparison) >= 2:
             second = comparison[1]
-            if second.unit_price > 0:
-                gap = 1 - (comparison[0].unit_price / second.unit_price)
+            if second.product.price > 0:
+                gap = 1 - (comparison[0].product.price / second.product.price)
                 insights.append(
                     f"O segundo colocado, {second.chain}, está "
                     f"{format_pct(gap)} acima no mesmo produto/tamanho."

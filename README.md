@@ -1,15 +1,15 @@
 # Radar de Preço NE
 
 Comparador de preços de supermercado para redes do Nordeste. Digite um produto
-e veja onde está mais barato, com comparação justa por **kg, litro ou unidade**
-— inclusive quando a embalagem é um multipack.
+e veja onde está mais barato, com comparação justa pelo **conteúdo total da
+embalagem** — inclusive quando ela é um multipack.
 
 ![Painel do Radar de Preço NE](docs/assets/radar-preco.png)
 
 ## O que o painel entrega
 
 - Busca em cinco redes com API pública VTEX.
-- Ranking por preço unitário, não por preço de etiqueta.
+- Ranking justo pelo conteúdo da embalagem, não pelo preço de etiqueta.
 - Normalização de multipacks: `6x350ml`, `pack c/ 6`, `leve 12 pague 11`,
   `2x2L` e kits do tipo `2L + 2L`.
 - Matching cross-chain por EAN exato e fallback fuzzy, sem cruzar tamanhos.

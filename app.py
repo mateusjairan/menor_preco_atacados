@@ -23,7 +23,7 @@ from src.insights import (
 )
 from src.matching import best_in_group, group_products
 from src.models import ChainResult, Product
-from src.units import format_size, format_unit_price
+from src.units import format_size
 
 logging.basicConfig(
     level=logging.INFO,
@@ -89,6 +89,7 @@ h1 { font-size: clamp(2.1rem, 4vw, 3.1rem); font-weight: 650; margin-bottom: .1r
   color: var(--cn-accent); font-family: var(--cn-mono); font-size: 1.45rem;
   font-weight: 650; letter-spacing: -.03em; text-align: right;
 }
+.cn-gap { height: 1.15rem; }
 .cn-footer {
   border-top: 1px solid var(--cn-line); color: var(--cn-muted);
   font-size: .76rem; line-height: 1.5; margin-top: 1.6rem; padding-top: .9rem;
@@ -140,9 +141,9 @@ def _render_header() -> None:
     )
     st.title("Radar de Preço NE")
     st.markdown(
-        '<p class="cn-subtitle">Compare o preço real por quilo, litro ou '
-        "unidade entre cinco redes. O ranking usa o conteúdo total da "
-        "embalagem — inclusive multipacks — para uma comparação justa.</p>",
+        '<p class="cn-subtitle">Compare embalagens equivalentes entre cinco '
+        "redes. O ranking usa o conteúdo total da embalagem — inclusive "
+        "multipacks — para uma comparação justa.</p>",
         unsafe_allow_html=True,
     )
 
@@ -228,6 +229,10 @@ def _kpi(label: str, value: str, detail: str, tone: str = "") -> None:
     )
 
 
+def _gap() -> None:
+    st.markdown('<div class="cn-gap"></div>', unsafe_allow_html=True)
+
+
 def _truncate(text: str, limit: int) -> str:
     return text if len(text) <= limit else text[: limit - 1].rstrip() + "…"
 
@@ -242,8 +247,8 @@ def _render_kpis(ranking, summary: MarketSummary) -> None:
             _kpi(
                 "Menor preço",
                 format_brl(best.price),
-                f"{format_unit_price(best.unit_price, best.package_unit)}"
-                f" · {_truncate(best.chain, 28)}",
+                f"{_truncate(best.chain, 28)} · "
+                f"{format_size(best.package_size, best.package_unit)}",
                 "cn-kpi--accent",
             )
     with columns[1]:
@@ -275,31 +280,20 @@ def _render_kpis(ranking, summary: MarketSummary) -> None:
         )
 
 
-def _unit_label(package_unit: str | None) -> str:
-    return {"kg": "kg", "l": "litro", "un": "unidade"}.get(
-        package_unit or "", package_unit or "unidade"
-    )
-
-
-def _render_chart(comparison, best: Product) -> None:
+def _render_chart(comparison) -> None:
     labels = []
     for index, offer in enumerate(comparison):
         labels.append(
             {
                 "Rede": offer.chain,
-                "Valor": offer.unit_price,
                 "Preço": offer.product.price,
-                "Texto": f"{offer.unit_price:,.2f}".replace(",", "X")
-                .replace(".", ",")
-                .replace("X", "."),
+                "Texto": format_brl(offer.product.price).removeprefix("R$ "),
                 "Destaque": "Menor" if index == 0 else "Demais",
             }
         )
     data = pd.DataFrame(labels)
-    unit = _unit_label(best.package_unit)
-    unit_short = "L" if best.package_unit == "l" else unit
     order = [offer.chain for offer in comparison]
-    max_value = max(offer.unit_price for offer in comparison)
+    max_value = max(offer.product.price for offer in comparison)
 
     base = alt.Chart(data).encode(
         y=alt.Y(
@@ -315,8 +309,8 @@ def _render_chart(comparison, best: Product) -> None:
             ),
         ),
         x=alt.X(
-            "Valor:Q",
-            title=f"R$ por {unit}",
+            "Preço:Q",
+            title="Preço (R$)",
             scale=alt.Scale(domain=[0, max_value * 1.22]),
             axis=alt.Axis(
                 format=".2f",
@@ -339,7 +333,6 @@ def _render_chart(comparison, best: Product) -> None:
         ),
         tooltip=[
             alt.Tooltip("Rede:N", title="Rede"),
-            alt.Tooltip("Valor:Q", format=".2f", title=f"R$/{unit_short}"),
             alt.Tooltip("Preço:Q", format=".2f", title="Preço"),
         ],
     )
@@ -382,16 +375,16 @@ def _render_reference(
         with price_col:
             st.markdown(
                 f'<div class="cn-ref-price">'
-                f"{html.escape(format_unit_price(best.unit_price, best.package_unit))}"
+                f"{html.escape(format_brl(best.price))}"
                 "</div>",
                 unsafe_allow_html=True,
             )
-            st.caption("preço unitário")
+            st.caption("preço")
 
         group = reference_group(groups, best)
         comparison = chain_comparison(group)
         if len(comparison) >= 2:
-            _render_chart(comparison, best)
+            _render_chart(comparison)
         else:
             st.caption(
                 "O mesmo produto/tamanho não aparece em outra rede nesta busca; "
@@ -480,8 +473,8 @@ def _render_table(
         _render_download(table, termo)
 
     st.caption(
-        "Ordenado por preço unitário. Itens sem tamanho identificado "
-        "aparecem no fim."
+        "Ordenado pelo melhor preço por conteúdo da embalagem. "
+        "Itens sem tamanho identificado aparecem no fim."
     )
     st.dataframe(
         table,
@@ -603,10 +596,12 @@ def _render_results(results: list[ChainResult], termo: str) -> None:
     ranking = rank(results)
 
     _render_kpis(ranking, summary)
+    _gap()
 
     best_group = reference_group(groups, ranking.best_overall)
     comparison = chain_comparison(best_group)
     _render_reference(ranking.best_overall, groups)
+    _gap()
     _render_market_read(ranking, summary, comparison)
     _render_table(products, ranking.best_overall, results, termo)
     _render_sources(results, summary)

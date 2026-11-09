@@ -348,7 +348,7 @@ Redes consultadas: [x] GBarbosa [x] Mercantil [x] Hiperideal [x] Atacadão [x] T
 Cards: Menor preço R$ 10,99 · Economia 12% · Cobertura 5/5 · Comparáveis 68
 
 Produto de referência
-[ gráfico de barras: preço/L por rede, menor em destaque ]
+[ gráfico de barras: preço por rede, menor em destaque ]
 
 Leitura do mercado
 - rede líder, diferença para o segundo, cobertura, qualidade dos dados
@@ -361,7 +361,7 @@ Regras:
 - Tema claro, off-white, tinta escura e um único acento teal; sem gradiente, glassmorphism, neon ou emoji decorativo.
 - Tipografia hierárquica e números em monoespaçada.
 - Ordenar por `unit_price` asc; `None` vai para o fim.
-- A coluna `Preço/un` não é exibida na tabela; o preço unitário continua no ranking, na economia e no produto de referência.
+- A UI não exibe valores `R$/kg`, `R$/L` ou `R$/un`; o preço unitário continua apenas interno no ranking e na economia. A tabela não tem `Preço/un`.
 - Destacar `best_overall` e o menor de grupos com pelo menos duas redes.
 - Cards de KPI e leitura de mercado usam apenas dados reais; nada de métrica inventada.
 - `st.column_config.NumberColumn(format="R$ %.2f")` para preço; `LinkColumn` para URL.
