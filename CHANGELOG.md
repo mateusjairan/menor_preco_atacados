@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.3.0 — 2026-11-09
+
+- Exibe todas as redes implementadas no formulário: cinco VTEX, Grupo Mateus
+  e Villefort.
+- Remove o toggle único de APIs reversas; cada fonte experimental tem seu
+  próprio checkbox.
+- Tier B passa a ser habilitado por padrão, com opção de desligar via
+  `ENABLE_REVERSE_API=false`.
+
 ## v1.2.0 — 2026-11-09
 
 - Implementa VipCommerce anônimo para a rede Villefort (Tier B experimental).

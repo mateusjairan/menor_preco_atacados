@@ -109,8 +109,8 @@ def test_close_closes_client():
     assert client.closed is True
 
 
-def test_reverse_api_is_disabled_by_default():
-    assert config.ENABLE_REVERSE_API is False
+def test_reverse_api_is_enabled_by_default():
+    assert config.ENABLE_REVERSE_API is True
 
 
 def test_reverse_adapters_are_not_built_when_flag_is_off(monkeypatch):

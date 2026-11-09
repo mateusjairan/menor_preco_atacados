@@ -15,7 +15,7 @@ embalagem** — inclusive quando ela é um multipack.
 
 ## O que o painel entrega
 
-- Busca em cinco redes com API pública VTEX.
+- Busca em cinco redes VTEX + Grupo Mateus e Villefort (Tier B experimental).
 - Ranking justo pelo conteúdo da embalagem, não pelo preço de etiqueta.
 - Normalização de multipacks: `6x350ml`, `pack c/ 6`, `leve 12 pague 11`,
   `2x2L` e kits do tipo `2L + 2L`.
@@ -30,7 +30,7 @@ embalagem** — inclusive quando ela é um multipack.
 | Tier | Redes | Situação |
 |---|---|---|
 | A — API pública VTEX | GBarbosa, Mercantil Atacado, Hiperideal, Atacadão, Atacadão Treichel | Homologado |
-| B — API reversa | Grupo Mateus; Villefort (VipCommerce); Pinheiro, Nordestão e Diniz em pesquisa | Experimental, desligado por padrão |
+| B — API reversa | Grupo Mateus; Villefort (VipCommerce); Pinheiro, Nordestão e Diniz em pesquisa | Experimental, habilitado por padrão |
 | C — fora do escopo | Assaí (sem catálogo público), Extra, Carrefour, GPA, Novo Atacarejo, Recibom | Não suportado na v1 |
 
 Validação ao vivo em 09/11/2026: cinco redes VTEX, 214 itens para
@@ -65,8 +65,8 @@ O caminho mais simples é o **Streamlit Community Cloud**:
 4. Configure as variáveis de ambiente no painel.
 5. Teste as cinco redes VTEX: o egress compartilhado do Streamlit Cloud pode ser
    bloqueado por alguma fonte. Se isso acontecer, remova a rede ou use um
-   container próprio com egress estável. O Grupo Mateus fica atrás de
-   `ENABLE_REVERSE_API`.
+   container próprio com egress estável. As fontes experimentais podem ser
+   desligadas com `ENABLE_REVERSE_API=false`.
 
 Não tente hospedar Streamlit no GitHub Pages; ele exige um servidor Python.
 
@@ -87,7 +87,7 @@ Copie `.env.example` para `.env` ou defina as variáveis no ambiente:
 
 | Variável | Padrão | Função |
 |---|---|---|
-| `ENABLE_REVERSE_API` | `false` | Liga adapters Tier B, incluindo Grupo Mateus |
+| `ENABLE_REVERSE_API` | `true` | Liga adapters Tier B, incluindo Grupo Mateus e Villefort |
 | `HTTP_TIMEOUT` | `10` | Timeout por request, em segundos |
 | `MAX_PAGES` | `2` | Páginas de 50 itens por rede |
 | `IMPERSONATE` | `chrome` | Perfil TLS do `curl_cffi` |
@@ -157,8 +157,9 @@ docs/assets/                 screenshot e vídeo do painel
 - Itens sem tamanho identificado aparecem na tabela, mas ficam fora do ranking
   por unidade.
 - Correspondências fuzzy são sinalizadas; confira o produto antes de comprar.
-- Tier B permanece desligado por padrão; Grupo Mateus e Villefort são
-  experimentais e requerem revisão de ToS antes de uso público.
+- Tier B é experimental e vem habilitado por padrão; pode ser desligado com
+  `ENABLE_REVERSE_API=false`. Grupo Mateus e Villefort requerem revisão de ToS
+  antes de uso público.
 - Villefort depende da chave pública de loja do VipCommerce, configurada por
   `VIPCOMMERCE_LOJA_KEY` e não versionada.
 - Assaí não expõe catálogo público de produtos; a compra online é via app ou

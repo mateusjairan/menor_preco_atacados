@@ -142,8 +142,8 @@ def _render_header() -> None:
     st.title("Radar de Preço NE")
     st.markdown(
         '<p class="cn-subtitle">Compare embalagens equivalentes entre cinco '
-        "redes. O ranking usa o conteúdo total da embalagem — inclusive "
-        "multipacks — para uma comparação justa.</p>",
+        "redes VTEX e fontes experimentais. O ranking usa o conteúdo total da "
+        "embalagem — inclusive multipacks — para uma comparação justa.</p>",
         unsafe_allow_html=True,
     )
 
@@ -170,24 +170,42 @@ def _render_search() -> None:
             '<div class="cn-label">Redes consultadas</div>',
             unsafe_allow_html=True,
         )
-        columns = st.columns(len(config.TIER_A))
+        reverse_slugs = {chain.slug for chain in config.TIER_B}
+        available_chains = tuple(config.TIER_A) + tuple(
+            chain for chain in config.TIER_B if chain.implemented
+        )
         selected: list[str] = []
-        for column, chain in zip(columns, config.TIER_A, strict=True):
-            with column:
-                if st.checkbox(chain.name, value=True, key=f"rede_{chain.slug}"):
-                    selected.append(chain.slug)
+        for start in range(0, len(available_chains), 4):
+            row = available_chains[start : start + 4]
+            columns = st.columns(len(row))
+            for column, chain in zip(columns, row, strict=True):
+                is_reverse = chain.slug in reverse_slugs
+                reverse_disabled = is_reverse and not config.ENABLE_REVERSE_API
+                default_on = not reverse_disabled and (
+                    not is_reverse
+                    or chain.slug != "villefort"
+                    or bool(config.VIPCOMMERCE_LOJA_KEY)
+                )
+                help_text = None
+                if reverse_disabled:
+                    help_text = "Ative ENABLE_REVERSE_API para usar esta fonte."
+                elif chain.slug == "villefort" and not config.VIPCOMMERCE_LOJA_KEY:
+                    help_text = "Configure VIPCOMMERCE_LOJA_KEY para usar esta fonte."
+                elif is_reverse:
+                    help_text = "Fonte experimental (Tier B)."
+                with column:
+                    if st.checkbox(
+                        chain.name,
+                        value=default_on,
+                        key=f"rede_{chain.slug}",
+                        disabled=reverse_disabled,
+                        help=help_text,
+                    ):
+                        selected.append(chain.slug)
 
-        incluir_reverse = False
-        if config.ENABLE_REVERSE_API:
-            incluir_reverse = st.checkbox(
-                "Incluir APIs reversas (experimental)",
-                value=False,
-                key="incluir_reverse",
-                help="Inclui Grupo Mateus e Villefort (experimentais); demais "
-                "redes VipCommerce seguem em pesquisa.",
-            )
-        else:
-            st.caption("Tier B (APIs reversas) desligado por padrão.")
+        if not config.ENABLE_REVERSE_API:
+            st.caption("Tier B desativado por ENABLE_REVERSE_API=false.")
+        incluir_reverse = any(slug in reverse_slugs for slug in selected)
 
     if submitted:
         if not termo.strip():
@@ -213,9 +231,9 @@ def _render_initial() -> None:
             "`café 500g` · `coca cola 2l`"
         )
         st.caption(
-            "A busca consulta cinco redes públicas em paralelo e mantém "
-            "cache de cinco minutos. Itens sem tamanho identificado ficam "
-            "fora do ranking por unidade."
+            "A busca consulta cinco redes VTEX e, quando habilitadas, as fontes "
+            "experimentais Grupo Mateus e Villefort. Cache de cinco minutos. "
+            "Itens sem tamanho identificado ficam fora do ranking por unidade."
         )
 
 

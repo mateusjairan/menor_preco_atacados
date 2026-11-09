@@ -343,7 +343,7 @@ Se a API exigir login que o visitante não tem, **pare e pergunte**.
 - Uma falha não derruba a busca: `ChainResult.error`.
 - Mensagens curtas: "tempo esgotado", "bloqueio temporário", "instabilidade", "resposta inesperada".
 - Log INFO: rede, termo, status, itens, ms. Nunca payload completo.
-- `ENABLE_REVERSE_API=false` por padrão; se `true`, entram apenas redes Tier B com `implemented=True` (hoje, Grupo Mateus).
+- `ENABLE_REVERSE_API=true` por padrão; se `false`, ficam fora as redes Tier B com `implemented=True` (hoje, Grupo Mateus e Villefort).
 - Timeout global da busca: 20s.
 
 ---
@@ -358,7 +358,7 @@ Radar de Preço NE
 Compare o preço real por quilo, litro ou unidade...
 
 [ coca cola ........................ ] [ Buscar ]
-Redes consultadas: [x] GBarbosa [x] Mercantil [x] Hiperideal [x] Atacadão [x] Treichel
+Redes consultadas: [x] GBarbosa [x] Mercantil [x] Hiperideal [x] Atacadão [x] Treichel [x] Grupo Mateus [x] Villefort
 
 Cards: Menor preço R$ 10,99 · Economia 12% · Cobertura 5/5 · Comparáveis 68
 
@@ -462,7 +462,7 @@ altair>=4.2
 `.env.example`:
 
 ```
-ENABLE_REVERSE_API=false
+ENABLE_REVERSE_API=true
 HTTP_TIMEOUT=10
 MAX_PAGES=2
 IMPERSONATE=chrome
@@ -491,7 +491,7 @@ VIPCOMMERCE_LOJA_KEY=
 - [ ] `pytest -q` e `ruff check .` verdes.
 - [ ] Nenhum request HTTP em `app.py`.
 - [ ] Nenhum segredo versionado.
-- [ ] Tier B desligado por padrão.
+- [ ] Tier B controlado por `ENABLE_REVERSE_API`; padrão habilitado para exibir todas as redes implementadas.
 - [ ] `IMPERSONATE` configurável e fallback testado.
 
 ---

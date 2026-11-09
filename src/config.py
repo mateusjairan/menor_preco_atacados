@@ -149,7 +149,7 @@ CHAINS: tuple[ChainConfig, ...] = TIER_A + TIER_B + TIER_C
 CHAINS_BY_SLUG: dict[str, ChainConfig] = {chain.slug: chain for chain in CHAINS}
 
 # --- Flags e limites ---------------------------------------------------------
-ENABLE_REVERSE_API: bool = _env_bool("ENABLE_REVERSE_API", False)
+ENABLE_REVERSE_API: bool = _env_bool("ENABLE_REVERSE_API", True)
 HTTP_TIMEOUT: float = _env_float("HTTP_TIMEOUT", 10.0)
 MAX_PAGES: int = _env_int("MAX_PAGES", 2)
 IMPERSONATE: str = os.getenv("IMPERSONATE", "chrome").strip() or "chrome"

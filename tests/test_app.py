@@ -38,6 +38,9 @@ def test_app_starts_without_exception(monkeypatch):
     assert not at.exception
     assert at.title[0].value == "Radar de Preço NE"
     assert any("Buscar" in button.label for button in at.button)
+    labels = [checkbox.label for checkbox in at.checkbox]
+    assert "Grupo Mateus" in labels
+    assert "Villefort" in labels
 
 
 def test_app_search_renders_results(monkeypatch):
