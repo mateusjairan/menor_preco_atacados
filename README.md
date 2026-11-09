@@ -6,6 +6,13 @@ embalagem** — inclusive quando ela é um multipack.
 
 ![Painel do Radar de Preço NE](docs/assets/radar-preco.png)
 
+## Demonstração
+
+[Assista ao vídeo em MP4](docs/assets/demo-radar-preco.mp4) — busca real por
+`coca cola`, do formulário até a tabela comparativa.
+
+![Demonstração da busca](docs/assets/demo-radar-preco.gif)
+
 ## O que o painel entrega
 
 - Busca em cinco redes com API pública VTEX.
