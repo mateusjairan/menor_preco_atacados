@@ -1,0 +1,54 @@
+{
+  "success": true,
+  "data": {
+    "busca_id": "10061",
+    "produtos": [
+      {
+        "produto_id": 1255,
+        "descricao": "Leite Integral Longa Vida Porto Alegre 1l",
+        "imagem": "cdabf984-9dac-4ce7-a547-d5f1a147a16d.jpg",
+        "disponivel": true,
+        "preco": "4.58",
+        "preco_original": 0,
+        "link": "leite-integral-longa-vida-porto-alegre-1l",
+        "codigo_barras": "7896122305207",
+        "unidade_sigla": "TP",
+        "marca": null
+      },
+      {
+        "produto_id": 1266,
+        "descricao": "Leite Fermentado Itambé Tradicional - 6 Un. de 75g",
+        "imagem": "99beb9b6-f45b-4f90-a88a-ca1a04e5d555.jpg",
+        "disponivel": true,
+        "preco": "12.00",
+        "preco_original": 2,
+        "link": "leite-fermentado-itambe-tradicional-6-un-de-75g",
+        "codigo_barras": "78913554",
+        "unidade_sigla": "UN",
+        "marca": "ITAMBÉ"
+      },
+      {
+        "produto_id": 9999,
+        "descricao": "Leite indisponível 1l",
+        "imagem": "sem-estoque.jpg",
+        "disponivel": false,
+        "preco": "9.99",
+        "preco_original": 0,
+        "link": "leite-indisponivel-1l",
+        "codigo_barras": "7890000000000",
+        "unidade_sigla": "TP",
+        "marca": null
+      }
+    ],
+    "digitado": "leite",
+    "termo": "leite",
+    "filtros": {}
+  },
+  "paginator": {
+    "page": 1,
+    "items_per_page": 20,
+    "total_pages": 1,
+    "total_items": 3
+  },
+  "isRedirect": false
+}

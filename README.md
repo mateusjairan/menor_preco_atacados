@@ -30,12 +30,13 @@ embalagem** — inclusive quando ela é um multipack.
 | Tier | Redes | Situação |
 |---|---|---|
 | A — API pública VTEX | GBarbosa, Mercantil Atacado, Hiperideal, Atacadão, Atacadão Treichel | Homologado |
-| B — API reversa | Grupo Mateus; Pinheiro, Nordestão e Diniz (VipCommerce em pesquisa) | Experimental, desligado por padrão |
+| B — API reversa | Grupo Mateus; Villefort (VipCommerce); Pinheiro, Nordestão e Diniz em pesquisa | Experimental, desligado por padrão |
 | C — fora do escopo | Assaí (sem catálogo público), Extra, Carrefour, GPA, Novo Atacarejo, Recibom | Não suportado na v1 |
 
 Validação ao vivo em 09/11/2026: cinco redes VTEX, 214 itens para
 `leite integral 1l`, cerca de 3,1 s em cache frio. Grupo Mateus validado na
-loja Cohama (São Luís/MA) com 22 itens para `coca cola`.
+loja Cohama (São Luís/MA) com 22 itens para `coca cola`. Villefort (VipCommerce)
+validado com 20 itens para `leite`.
 
 ## Como rodar
 
@@ -95,6 +96,7 @@ Copie `.env.example` para `.env` ou defina as variáveis no ambiente:
 | `MATEUS_LATITUDE` | `-2.5157923` | Latitude da praça Mateus |
 | `MATEUS_LONGITUDE` | `-44.2452414` | Longitude da praça Mateus |
 | `MATEUS_MARKET_ID` | vazio | Força uma loja específica do Mateus |
+| `VIPCOMMERCE_LOJA_KEY` | vazio | Chave pública de loja do VipCommerce (Villefort) |
 
 ## Como funciona
 
@@ -108,6 +110,7 @@ flowchart LR
     A --> AT[Atacadão]
     A --> T[Treichel]
     A -.-> GM[Grupo Mateus]
+    A -.-> V[Villefort]
     A --> R[Matching + Ranking]
     R --> S
 ```
@@ -140,7 +143,7 @@ src/insights.py              cobertura, comparação e insights
 src/aggregator.py            orquestração paralela + ranking
 src/adapters/vtex.py         Tier A
 src/adapters/mateus.py       Tier B (Mateus Mais)
-src/adapters/vipcommerce.py  Tier B (placeholder até homologação)
+src/adapters/vipcommerce.py  Tier B (Villefort; demais em pesquisa)
 tests/                       testes offline e fixtures
 docs/api/                    registro de APIs descobertas
 docs/assets/                 screenshot e vídeo do painel
@@ -154,8 +157,10 @@ docs/assets/                 screenshot e vídeo do painel
 - Itens sem tamanho identificado aparecem na tabela, mas ficam fora do ranking
   por unidade.
 - Correspondências fuzzy são sinalizadas; confira o produto antes de comprar.
-- Tier B permanece desligado por padrão; o Grupo Mateus é experimental e requer
-  revisão de ToS antes de uso público.
+- Tier B permanece desligado por padrão; Grupo Mateus e Villefort são
+  experimentais e requerem revisão de ToS antes de uso público.
+- Villefort depende da chave pública de loja do VipCommerce, configurada por
+  `VIPCOMMERCE_LOJA_KEY` e não versionada.
 - Assaí não expõe catálogo público de produtos; a compra online é via app ou
   parceiros de delivery.
 
@@ -169,8 +174,9 @@ docs/assets/                 screenshot e vídeo do painel
   contornada.
 - Nenhum token, cookie ou segredo no repositório.
 - Nenhum dado pessoal é armazenado.
-- O Grupo Mateus usa endpoint anônimo do próprio SPA, atrás de feature flag;
-  não há login, token de cliente ou contorno de proteção.
+- Grupo Mateus e Villefort usam endpoints anônimos do próprio front-end, atrás
+  de feature flag; não há login de cliente, token de usuário ou contorno de
+  proteção.
 
 ## Roadmap
 

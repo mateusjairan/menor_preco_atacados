@@ -39,25 +39,25 @@ Status de cada fonte. Atualize ao descobrir/validar um endpoint.
 
 ## Tier B — reversas
 
-### VipCommerce (Pinheiro, Nordestão, Diniz)
+### VipCommerce (Villefort; Pinheiro, Nordestão, Diniz)
 
-Detalhes do fluxo e do bloqueio de homologação em [`vipcommerce.md`](vipcommerce.md).
+Detalhes do fluxo em [`vipcommerce.md`](vipcommerce.md).
 
 - **Plataforma:** VipCommerce white-label ("Supermercados Online")
 - **Base:** `https://services.vipcommerce.com.br/api-admin/v1`
-- **Fluxo identificado:**
+- **Fluxo:**
   ```
-  POST /auth/loja/login          -> token anônimo da loja
-  GET  /filiais/dominio/{host}   -> orgId, filialId, domainKey
-  GET  /org/{orgId}/...          -> catálogo/busca/produto
+  GET  /organizacoes/filiais/dominio/{host}  -> orgId, filialId, domainKey
+  POST /org/{orgId}/auth/loja/login          -> token anônimo da loja
+  GET  /org/{orgId}/filial/1/centro_distribuicao/1/loja/buscas/produtos/termo/{termo}
   ```
 - **Headers de tenant:** `DomainKey`, `OrganizationId`, `sessao-id`
-- **Auth:** token anônimo obtido pelo próprio front-end
-- **Status:** 🔬
+- **Auth:** token anônimo obtido pelo front-end; chave pública via `VIPCOMMERCE_LOJA_KEY`
+- **Status:** ✅ experimental para Villefort; 🔬 Pinheiro/Nordestão/Diniz
 - **Bloqueios:**
   - Revisar ToS antes de ligar.
   - Confirmar que a chamada é anônima (sem login de cliente).
-  - Não versionar token.
+  - Não versionar token ou chave.
   - Feature flag `ENABLE_REVERSE_API`.
 
 ### Grupo Mateus (Mateus Mais)

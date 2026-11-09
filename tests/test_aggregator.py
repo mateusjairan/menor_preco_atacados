@@ -69,8 +69,8 @@ def test_build_adapters_default_is_tier_a_only(monkeypatch):
 def test_build_adapters_reverse_only_when_flag_enabled(monkeypatch):
     monkeypatch.setattr(config, "ENABLE_REVERSE_API", True)
     adapters = build_adapters(include_reverse=True)
-    assert len(adapters) == 6
-    assert [a.slug for a in adapters[-1:]] == ["mateus"]
+    assert len(adapters) == 7
+    assert [a.slug for a in adapters[-2:]] == ["mateus", "villefort"]
     assert all(a.slug not in {"pinheiro", "nordestao", "diniz"} for a in adapters)
 
 

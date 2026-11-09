@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.2.0 — 2026-11-09
+
+- Implementa VipCommerce anônimo para a rede Villefort (Tier B experimental).
+- Adiciona resolução de organização por domínio, login anônimo de loja, busca,
+  paginação e parsing de preço/disponibilidade.
+- Adiciona `VIPCOMMERCE_LOJA_KEY` via ambiente; nenhuma chave é versionada.
+- Adiciona fixtures e testes offline do VipCommerce.
+
 ## v1.1.0 — 2026-11-09
 
 - Adiciona Grupo Mateus (Mateus Mais) como fonte Tier B experimental, com

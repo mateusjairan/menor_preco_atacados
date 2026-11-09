@@ -123,6 +123,14 @@ TIER_B: tuple[ChainConfig, ...] = (
         "MA, PI, CE, PE, BA",
         "mateus",
     ),
+    ChainConfig(
+        "Villefort",
+        "villefort",
+        "https://www.villefortentrega.com.br",
+        "reverse",
+        "CE",
+        "vipcommerce",
+    ),
 )
 
 # --- Tier C: sem catálogo público (não entra no pool de busca) --------------
@@ -152,6 +160,9 @@ MATEUS_CITY_CODE: str = os.getenv("MATEUS_CITY_CODE", "2111300").strip()
 MATEUS_LATITUDE: float = _env_float("MATEUS_LATITUDE", -2.5157923, minimum=-90.0)
 MATEUS_LONGITUDE: float = _env_float("MATEUS_LONGITUDE", -44.2452414, minimum=-180.0)
 MATEUS_MARKET_ID: str = os.getenv("MATEUS_MARKET_ID", "").strip()
+
+# Chave pública de cliente do VipCommerce (bundle do site), nunca versionada.
+VIPCOMMERCE_LOJA_KEY: str = os.getenv("VIPCOMMERCE_LOJA_KEY", "").strip()
 
 USER_AGENT = f"RadarPrecoNE/0.1 (+{CONTACT_EMAIL})"
 IMPERSONATE_FALLBACKS: tuple[str, ...] = ("chrome110", "safari17_0")

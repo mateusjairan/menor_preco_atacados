@@ -1,0 +1,14 @@
+{
+  "success": true,
+  "data": {
+    "id": 124,
+    "nome": "Villefort Entrega",
+    "ativo": true,
+    "em_manutencao": false,
+    "organizacao": {
+      "id": 120,
+      "nome": "Villefort entrega",
+      "enderecoServidor": "villefortentrega.com.br"
+    }
+  }
+}

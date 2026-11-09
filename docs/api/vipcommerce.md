@@ -1,37 +1,66 @@
-# VipCommerce — Tier B (não homologado)
+# VipCommerce — Tier B (experimental)
 
-Redes alvo: **Pinheiro (Bom Vizinho)**, **Nordestão** e **Diniz**.
+Redes alvo: **Villefort** (implementado), **Pinheiro (Bom Vizinho)**,
+**Nordestão** e **Diniz**.
 
-## Arquitetura identificada
+## Arquitetura
 
-White-label "Supermercados Online". O bundle do site expõe o fluxo:
+White-label "Supermercados Online". O front-end expõe:
 
+```text
+GET  /organizacoes/filiais/dominio/{host}  -> organização/filial
+POST /org/{orgId}/auth/loja/login          -> token anônimo da loja
+GET  /org/{orgId}/filial/1/centro_distribuicao/1/loja/buscas/produtos/termo/{termo}
 ```
-POST {api}/auth/loja/login          -> token anônimo da loja
-GET  {api}/filiais/dominio/{host}   -> orgId, filialId, domainKey
-GET  {api}/org/{orgId}/...          -> catálogo, busca, produto
+
+Base: `https://services.vipcommerce.com.br/api-admin/v1`.
+
+## Fluxo implementado — Villefort
+
+1. **Domínio:** `villefortentrega.com.br` resolve para organização `120`.
+2. **Login anônimo:** usuário `loja` + chave pública de cliente do bundle.
+3. **Busca:** `GET /org/120/filial/1/centro_distribuicao/1/loja/buscas/produtos/termo/leite?page=1`.
+4. Headers de tenant:
+   - `OrganizationId`
+   - `DomainKey`
+   - `Authorization: Bearer ...`
+   - `sessao-id`
+
+### Configuração
+
+A chave é pública no bundle, mas **não é versionada**:
+
+```env
+ENABLE_REVERSE_API=true
+VIPCOMMERCE_LOJA_KEY=<chave-publica-de-loja>
 ```
 
-- `api` = `https://services.vipcommerce.com.br/api-admin/v1` (modo horizontalizado).
-- Headers de tenant: `DomainKey`, `OrganizationId`, `sessao-id`.
-- O token é obtido pelo próprio front-end anônimo.
+Sem a chave, o adapter falha com mensagem clara.
 
-## Status no projeto
+### Campos usados
 
-**🔬 Não homologado.** O adapter (`src/adapters/vipcommerce.py`) existe apenas
-como placeholder e levanta `AdapterError` com mensagem clara. Ele só é
-construído quando `ENABLE_REVERSE_API=true`.
+| Campo | Uso |
+|---|---|
+| `descricao` | nome |
+| `preco` | preço efetivo |
+| `preco_original` | preço de lista, se maior |
+| `codigo_barras` | EAN |
+| `produto_id` + `link` | URL do produto |
+| `imagem` | imagem (CDN VipCommerce) |
+| `disponivel` | estoque/disponibilidade |
+| `unidade_sigla` | apoio; o tamanho vem do nome |
+| `paginator.total_pages` | paginação |
 
-Motivos para não ligar ainda:
+## Status
 
-1. Revisar os ToS de cada rede antes de qualquer chamada.
-2. Confirmar que a chamada é anônima (sem login de cliente).
-3. Capturar request/response reais e mapear os campos de catálogo/preço.
-4. Salvar fixture sanitizada em `tests/fixtures/` e escrever testes offline.
-5. Nunca versionar token, cookie ou chave.
+- **Villefort:** ✅ experimental, validado ao vivo com busca por `leite`.
+- **Pinheiro, Nordestão, Diniz:** 🔬 fluxo conhecido; ainda não configurados.
+  É necessário revisar ToS, confirmar domínio/organização e criar fixture.
 
-## Próximo passo
+## Riscos
 
-Com ToS aprovado: capturar a busca no DevTools, reproduzir em `curl_cffi` com
-headers mínimos, documentar os campos observados aqui e só então implementar o
-parser. Sem contrato observado, **não inventar campo**.
+- Plataforma não documentada; endpoints podem mudar.
+- A chave é pública, mas deve ficar fora do repositório.
+- Preço e sortimento variam por filial/centro de distribuição.
+- Revisar ToS antes de uso público.
+- Não usar login de cliente, token de usuário ou contornar challenge.

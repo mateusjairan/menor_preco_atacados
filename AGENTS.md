@@ -51,6 +51,7 @@ O valor do app não é "listar produtos": é **responder 'onde comprar mais bara
 | Nordestão | RN | Plataforma VipCommerce | 🔬 pesquisar |
 | Diniz | CE | Plataforma VipCommerce | 🔬 pesquisar |
 | Grupo Mateus | MA, PI, CE, PE, BA | Mateus Mais; busca anônima via Meilisearch | ✅ experimental |
+| Villefort | CE | VipCommerce; busca anônima de loja | ✅ experimental |
 
 ### Tier C — não homologado
 
@@ -119,7 +120,7 @@ radar-preco-ne/
 
 Regras:
 - `app.py` não faz HTTP.
-- Um adapter por plataforma, não por rede. VTEX cobre 5; VipCommerce cobre 3; Mateus Mais tem adapter próprio.
+- Um adapter por plataforma, não por rede. VTEX cobre 5; VipCommerce cobre Villefort (Pinheiro, Nordestão e Diniz em pesquisa); Mateus Mais tem adapter próprio.
 - `ChainConfig.platform` decide o adapter no `build_adapters()`.
 - Todo adapter devolve `list[Product]`.
 
@@ -265,7 +266,7 @@ Só quando a rede tem catálogo público **na prática** (o site anônimo mostra
 
 ### 8.3 Exemplo já mapeado — VipCommerce
 
-As redes Pinheiro, Nordestão e Diniz usam o white-label **VipCommerce**. O bundle expõe a arquitetura:
+Villefort, Pinheiro, Nordestão e Diniz usam o white-label **VipCommerce**. O bundle expõe a arquitetura:
 
 ```
 POST {api}/auth/loja/login          # token anônimo da loja
@@ -277,7 +278,7 @@ GET  {api}/org/{orgId}/...          # catálogo, busca, produto
 - Headers de tenant: `DomainKey` e `OrganizationId`, além de `sessao-id`.
 - O token é obtido pelo próprio app anônimo.
 
-**Status:** fluxo identificado, **não homologado**. Antes de codar, revisar ToS e confirmar que a chamada é anônima. Não versionar token. No v1 o adapter é um placeholder com `implemented=False`; ele só entra no pool quando implementado e com `ENABLE_REVERSE_API=true`.
+**Status:** Villefort **implementado como experimental**. O fluxo é: resolver domínio, login anônimo da loja com chave pública (`VIPCOMMERCE_LOJA_KEY`, não versionada) e busca por termo. Pinheiro, Nordestão e Diniz continuam com `implemented=False` até revisão de ToS e configuração de domínio/organização.
 
 ### 8.4 Grupo Mateus — implementado como Tier B
 
@@ -412,7 +413,7 @@ Se estourar: reduzir páginas antes de aumentar concorrência.
 - `units.py`: `1kg` vs `500g`, `900ml` vs `1l`, `30un`, `1,5l`, tamanho ausente.
 - `matching.py`: mesmo EAN em redes diferentes; fuzzy 85 agrupa; 50 não agrupa; tamanhos diferentes nunca agrupam.
 - `vtex.py`: 206, múltiplos sellers, esgotado, EAN vazio.
-- `vipcommerce.py`: só com fixture; nunca chamada real no CI.
+- `vipcommerce.py`: resolução de domínio, login anônimo, busca, paginação, disponibilidade e chave via ambiente; só com fixture no CI.
 - `mateus.py`: resolução de loja, busca, preço promocional, estoque, medida e fallback de tamanho.
 - `aggregator.py`: uma rede com erro não impede as outras.
 - `insights.py`: cobertura, comparação por grupo e leitura de mercado.
@@ -472,6 +473,9 @@ MATEUS_CITY_CODE=2111300
 MATEUS_LATITUDE=-2.5157923
 MATEUS_LONGITUDE=-44.2452414
 MATEUS_MARKET_ID=
+
+# VipCommerce (Villefort)
+VIPCOMMERCE_LOJA_KEY=
 ```
 
 ---
