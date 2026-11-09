@@ -2,7 +2,7 @@
 
 ## v1.3.0 — 2026-11-09
 
-- Exibe todas as redes implementadas no formulário: cinco VTEX, Grupo Mateus
+- Exibe todas as redes implementadas no formulário: cinco redes de atacado, Grupo Mateus
   e Villefort.
 - Remove o toggle único de APIs reversas; cada fonte experimental tem seu
   próprio checkbox.
@@ -28,7 +28,7 @@
 
 ## v1.0.0 — 2026-11-09
 
-- Busca comparativa em cinco redes Tier A via API pública VTEX.
+- Busca comparativa em cinco redes de atacado.
 - Preço unitário por kg, litro e unidade, com suporte a multipacks e kits.
 - Matching cross-chain por EAN e fallback fuzzy, sem cruzar tamanhos.
 - Backfill de tamanho por EAN entre redes.

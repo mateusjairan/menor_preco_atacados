@@ -142,7 +142,7 @@ def _render_header() -> None:
     st.title("Radar de Preço NE")
     st.markdown(
         '<p class="cn-subtitle">Compare embalagens equivalentes entre cinco '
-        "redes VTEX e fontes experimentais. O ranking usa o conteúdo total da "
+        "redes de atacado e fontes experimentais. O ranking usa o conteúdo total da "
         "embalagem — inclusive multipacks — para uma comparação justa.</p>",
         unsafe_allow_html=True,
     )
@@ -231,7 +231,7 @@ def _render_initial() -> None:
             "`café 500g` · `coca cola 2l`"
         )
         st.caption(
-            "A busca consulta cinco redes VTEX e, quando habilitadas, as fontes "
+            "A busca consulta cinco redes de atacado e, quando habilitadas, as fontes "
             "experimentais Grupo Mateus e Villefort. Cache de cinco minutos. "
             "Itens sem tamanho identificado ficam fora do ranking por unidade."
         )

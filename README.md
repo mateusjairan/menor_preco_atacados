@@ -15,7 +15,7 @@ embalagem** — inclusive quando ela é um multipack.
 
 ## O que o painel entrega
 
-- Busca em cinco redes VTEX + Grupo Mateus e Villefort (Tier B experimental).
+- Busca em cinco redes de atacado + Grupo Mateus e Villefort (Tier B experimental).
 - Ranking justo pelo conteúdo da embalagem, não pelo preço de etiqueta.
 - Normalização de multipacks: `6x350ml`, `pack c/ 6`, `leve 12 pague 11`,
   `2x2L` e kits do tipo `2L + 2L`.
@@ -29,11 +29,11 @@ embalagem** — inclusive quando ela é um multipack.
 
 | Tier | Redes | Situação |
 |---|---|---|
-| A — API pública VTEX | GBarbosa, Mercantil Atacado, Hiperideal, Atacadão, Atacadão Treichel | Homologado |
+| A — Redes de atacado | GBarbosa, Mercantil Atacado, Hiperideal, Atacadão, Atacadão Treichel | Homologado |
 | B — API reversa | Grupo Mateus; Villefort (VipCommerce); Pinheiro, Nordestão e Diniz em pesquisa | Experimental, habilitado por padrão |
 | C — fora do escopo | Assaí (sem catálogo público), Extra, Carrefour, GPA, Novo Atacarejo, Recibom | Não suportado na v1 |
 
-Validação ao vivo em 09/11/2026: cinco redes VTEX, 214 itens para
+Validação ao vivo em 09/11/2026: cinco redes de atacado, 214 itens para
 `leite integral 1l`, cerca de 3,1 s em cache frio. Grupo Mateus validado na
 loja Cohama (São Luís/MA) com 22 itens para `coca cola`. Villefort (VipCommerce)
 validado com 20 itens para `leite`.
@@ -63,7 +63,7 @@ O caminho mais simples é o **Streamlit Community Cloud**:
 2. Selecione `app.py` como arquivo principal.
 3. Mantenha `requirements.txt` na raiz.
 4. Configure as variáveis de ambiente no painel.
-5. Teste as cinco redes VTEX: o egress compartilhado do Streamlit Cloud pode ser
+5. Teste as cinco redes de atacado: o egress compartilhado do Streamlit Cloud pode ser
    bloqueado por alguma fonte. Se isso acontecer, remova a rede ou use um
    container próprio com egress estável. As fontes experimentais podem ser
    desligadas com `ENABLE_REVERSE_API=false`.

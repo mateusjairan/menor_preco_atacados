@@ -13,7 +13,7 @@ Status: **não suportado** no v1.
 - `/api/catalog_system/pub/products/search`, `/graphql` e `/api/rest/...`
   retornam `404`.
 - O app **Meu Assaí** e a compra online usam app/delivery parceiros
-  (Rappi/Uber), sem catálogo web anônimo equivalente ao das redes VTEX.
+  (Rappi/Uber), sem catálogo web anônimo equivalente ao das redes de atacado.
 
 ## Por que não implementar
 

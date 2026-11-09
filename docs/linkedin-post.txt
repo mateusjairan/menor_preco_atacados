@@ -1,15 +1,11 @@
 Toda vez que eu vou ao mercado, bate a mesma dúvida: o pacote de 500 g por R$ 4,99 é mais barato que o de 1 kg por R$ 8,99?
 
-A etiqueta não responde. Foi dessa dúvida que nasceu o Radar de Preço NE, um painel que compara o preço por kg, litro ou unidade entre sete redes do Nordeste.
+A etiqueta não responde. Foi dessa dúvida que nasceu o Radar de Preço NE, um painel que compara o preço por kg, litro ou unidade entre sete redes de atacado do Nordeste.
 
 A ideia é simples: mostrar onde o mesmo produto está realmente mais barato, inclusive quando a embalagem é um multipack ou um kit. O painel também mostra a cobertura das redes, a economia do mesmo produto e a qualidade dos dados.
 
 Para construir isso, usei Python, Streamlit, Pandas, RapidFuzz e Altair, além de scrapers simultâneos. Também entraram Pytest, Ruff, Black e GitHub Actions para manter o projeto testado e organizado.
 
 A parte que não aparece no print deu bastante trabalho: arquitetura com adapters por plataforma, cache, tratamento de falhas por fonte e normalização de unidades.
-
-O projeto está aberto para feedback e contribuições:
-Repositório: [link do repositório]
-Demo: [link da demo]
 
 #Python #Streamlit #DataEngineering #WebScraping #RetailTech #DataScience #DesenvolvimentoDeSoftware #Nordeste
