@@ -1,0 +1,23 @@
+# Ambiente
+.env
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.log
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Editores / SO
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

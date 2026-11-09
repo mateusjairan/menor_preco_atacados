@@ -1,0 +1,150 @@
+[
+  {
+    "productId": "12541",
+    "productName": "Leite UHT Integral Leitissimo Garrafa 1l",
+    "brand": "LEITISSIMO",
+    "linkText": "leite-uht-integral-leitissimo-garrafa-1l-1189077",
+    "link": "https://www.gbarbosa.com.br/leite-uht-integral-leitissimo-garrafa-1l-1189077/p",
+    "items": [
+      {
+        "itemId": "13448",
+        "name": "Leite UHT Integral Leitissimo Garrafa 1l",
+        "ean": "7898939247015",
+        "images": [
+          {
+            "imageUrl": "https://gbarbosa.vteximg.com.br/arquivos/ids/209679/leite.jpg"
+          }
+        ],
+        "sellers": [
+          {
+            "sellerName": "promocao-sem-estoque",
+            "commertialOffer": {
+              "Price": 5.0,
+              "ListPrice": 9.9,
+              "AvailableQuantity": 0
+            }
+          },
+          {
+            "sellerName": "www.gbarbosa.com.br",
+            "commertialOffer": {
+              "Price": 8.9,
+              "ListPrice": 9.9,
+              "AvailableQuantity": 10
+            }
+          },
+          {
+            "sellerName": "loja-parceira",
+            "commertialOffer": {
+              "Price": 7.5,
+              "ListPrice": 9.0,
+              "AvailableQuantity": 2
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "productId": "5721",
+    "productName": "Arroz Branco Tipo 1 5kg",
+    "brand": "MARCA BOA",
+    "linkText": "arroz-branco-tipo-1-5kg-5721",
+    "items": [
+      {
+        "itemId": "6001",
+        "name": "Arroz Branco Tipo 1 5kg",
+        "ean": "7891234567890",
+        "images": [
+          {
+            "imageUrl": "https://gbarbosa.vteximg.com.br/arquivos/ids/999999/arroz.jpg"
+          }
+        ],
+        "sellers": [
+          {
+            "sellerName": "www.gbarbosa.com.br",
+            "commertialOffer": {
+              "Price": 20.0,
+              "ListPrice": 25.0,
+              "AvailableQuantity": 5
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "productId": "9001",
+    "productName": "Detergente Neutro 500ml",
+    "brand": "LIMPA BEM",
+    "linkText": "detergente-neutro-500ml-9001",
+    "link": "https://www.gbarbosa.com.br/detergente-neutro-500ml-9001/p",
+    "items": [
+      {
+        "itemId": "9101",
+        "name": "Detergente Neutro 500ml",
+        "ean": "",
+        "images": [],
+        "sellers": [
+          {
+            "sellerName": "www.gbarbosa.com.br",
+            "commertialOffer": {
+              "Price": 2.49,
+              "ListPrice": 2.99,
+              "AvailableQuantity": 30
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "productId": "9002",
+    "productName": "Sabao em Po 1kg",
+    "brand": "LIMPA BEM",
+    "linkText": "sabao-em-po-1kg-9002",
+    "link": "https://www.gbarbosa.com.br/sabao-em-po-1kg-9002/p",
+    "items": [
+      {
+        "itemId": "9102",
+        "name": "Sabao em Po 1kg",
+        "ean": "0",
+        "images": [],
+        "sellers": [
+          {
+            "sellerName": "www.gbarbosa.com.br",
+            "commertialOffer": {
+              "Price": 12.0,
+              "ListPrice": 12.0,
+              "AvailableQuantity": 8
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "productId": "9003",
+    "productName": "Cafe Torrado 500g",
+    "brand": "CAFE BOM",
+    "linkText": "cafe-torrado-500g-9003",
+    "link": "https://www.gbarbosa.com.br/cafe-torrado-500g-9003/p",
+    "items": [
+      {
+        "itemId": "9103",
+        "name": "Cafe Torrado 500g",
+        "ean": "7899999999999",
+        "images": [],
+        "sellers": [
+          {
+            "sellerName": "www.gbarbosa.com.br",
+            "commertialOffer": {
+              "Price": 18.0,
+              "ListPrice": 18.0,
+              "AvailableQuantity": 0
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

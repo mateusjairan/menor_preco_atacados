@@ -1,0 +1,5 @@
+streamlit>=1.50
+curl_cffi>=0.7
+pandas>=2.2
+rapidfuzz>=3.9
+altair>=4.2
