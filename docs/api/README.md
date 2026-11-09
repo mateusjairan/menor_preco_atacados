@@ -1,4 +1,4 @@
-# Registro de APIs — Comparador NE
+# Registro de APIs — Radar de Preço NE
 
 Status de cada fonte. Atualize ao descobrir/validar um endpoint.
 **Nunca** registre token, cookie ou chave neste arquivo.

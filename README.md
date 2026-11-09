@@ -1,10 +1,10 @@
-# Comparador NE
+# Radar de Preço NE
 
 Comparador de preços de supermercado para redes do Nordeste. Digite um produto
 e veja onde está mais barato, com comparação justa por **kg, litro ou unidade**
 — inclusive quando a embalagem é um multipack.
 
-![Painel do Comparador NE](docs/assets/comparador.png)
+![Painel do Radar de Preço NE](docs/assets/radar-preco.png)
 
 ## O que o painel entrega
 

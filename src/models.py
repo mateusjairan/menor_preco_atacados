@@ -1,4 +1,4 @@
-"""Modelo de dados do comparador."""
+"""Modelo de dados do Radar de Preço NE."""
 
 from __future__ import annotations
 

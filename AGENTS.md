@@ -1,4 +1,4 @@
-# AGENTS.md — Comparador NE
+# AGENTS.md — Radar de Preço NE
 
 App **Streamlit** que funciona como **comparador de preços de supermercado**: o usuário digita um produto, o app consulta várias redes do Nordeste e mostra **onde está mais barato**, com **preço por unidade** (R$/kg, R$/L, R$/un) para comparar embalagens diferentes.
 
@@ -84,7 +84,7 @@ Sem banco no v1. Feature flags por variável de ambiente.
 ## 4. Estrutura
 
 ```
-comparador-ne/
+radar-preco-ne/
 ├── AGENTS.md
 ├── README.md
 ├── requirements.txt
@@ -339,7 +339,7 @@ Direção visual: **painel editorial de inteligência de mercado**, não landing
 
 ```
 INTELIGÊNCIA DE PREÇOS · NORDESTE
-Comparador NE
+Radar de Preço NE
 Compare o preço real por quilo, litro ou unidade...
 
 [ coca cola ........................ ] [ Buscar ]

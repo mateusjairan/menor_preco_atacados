@@ -111,7 +111,7 @@ def search(
 
     results: dict[str, ChainResult] = {}
     executor = ThreadPoolExecutor(
-        max_workers=len(selected), thread_name_prefix="comparador-ne"
+        max_workers=len(selected), thread_name_prefix="radar-preco-ne"
     )
     futures = {
         executor.submit(_fetch_one, adapter, term, max_pages): adapter

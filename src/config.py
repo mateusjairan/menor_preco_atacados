@@ -1,4 +1,4 @@
-"""Configuração central: redes, flags e limites do Comparador NE."""
+"""Configuração central: redes, flags e limites do Radar de Preço NE."""
 
 from __future__ import annotations
 
@@ -117,7 +117,7 @@ MAX_PAGES: int = _env_int("MAX_PAGES", 2)
 IMPERSONATE: str = os.getenv("IMPERSONATE", "chrome").strip() or "chrome"
 CONTACT_EMAIL: str = os.getenv("CONTACT_EMAIL", "contato@seudominio.com.br").strip()
 
-USER_AGENT = f"ComparadorNE/0.1 (+{CONTACT_EMAIL})"
+USER_AGENT = f"RadarPrecoNE/0.1 (+{CONTACT_EMAIL})"
 IMPERSONATE_FALLBACKS: tuple[str, ...] = ("chrome110", "safari17_0")
 
 PAGE_SIZE = 50

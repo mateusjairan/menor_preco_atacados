@@ -36,7 +36,7 @@ def test_app_starts_without_exception(monkeypatch):
     at = AppTest.from_file(str(APP), default_timeout=30).run()
 
     assert not at.exception
-    assert at.title[0].value == "Comparador NE"
+    assert at.title[0].value == "Radar de Preço NE"
     assert any("Buscar" in button.label for button in at.button)
 
 

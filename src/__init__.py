@@ -1,1 +1,1 @@
-"""Comparador NE — comparação de preços de supermercados do Nordeste."""
+"""Radar de Preço NE — comparação de preços de supermercados do Nordeste."""

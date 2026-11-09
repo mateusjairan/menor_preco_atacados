@@ -31,7 +31,7 @@ logging.basicConfig(
 )
 
 st.set_page_config(
-    page_title="Comparador NE",
+    page_title="Radar de Preço NE",
     page_icon="📊",
     layout="wide",
     initial_sidebar_state="collapsed",
@@ -138,7 +138,7 @@ def _render_header() -> None:
         '<div class="cn-kicker">Inteligência de preços · Nordeste</div>',
         unsafe_allow_html=True,
     )
-    st.title("Comparador NE")
+    st.title("Radar de Preço NE")
     st.markdown(
         '<p class="cn-subtitle">Compare o preço real por quilo, litro ou '
         "unidade entre cinco redes. O ranking usa o conteúdo total da "
@@ -512,7 +512,7 @@ def _render_download(table: pd.DataFrame, termo: str) -> None:
     safe_term = "".join(
         char if char.isalnum() else "-" for char in termo.lower()
     ).strip("-")
-    filename = f"comparador-{safe_term or 'busca'}-{datetime.now():%Y%m%d}.csv"
+    filename = f"radar-preco-{safe_term or 'busca'}-{datetime.now():%Y%m%d}.csv"
     st.download_button(
         "Exportar CSV",
         data=csv.encode("utf-8-sig"),
