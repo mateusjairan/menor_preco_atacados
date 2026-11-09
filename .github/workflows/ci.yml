@@ -40,4 +40,14 @@ jobs:
         run: black --check .
 
       - name: Tests
-        run: pytest -q
+        env:
+          PYTHONPATH: .
+        run: |
+          set -o pipefail
+          python -m pytest -q 2>&1 | tee pytest.log
+          status=${PIPESTATUS[0]}
+          if [ "$status" -ne 0 ]; then
+            summary=$(tail -n 40 pytest.log | tr '\n' ' ' | cut -c1-900)
+            echo "::error title=Pytest failure::${summary}"
+          fi
+          exit "$status"
