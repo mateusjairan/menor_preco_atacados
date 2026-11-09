@@ -1,0 +1,31 @@
+Radar de Preço NE: comparando o preço real dos supermercados do Nordeste
+
+Já perdi tempo tentando descobrir se R$ 4,99 em uma embalagem de 500 g era mais barato que R$ 8,99 em 1 kg. O preço da etiqueta, sozinho, não responde.
+
+Foi por isso que criei o Radar de Preço NE: um painel que compara o preço por kg, litro ou unidade entre redes do Nordeste e mostra onde o mesmo produto está realmente mais barato.
+
+O que o projeto faz:
+• Busca simultânea em 7 redes
+• Normalização de tamanho e preço unitário, incluindo multipacks e kits
+• Matching por EAN + similaridade de nome
+• Ranking justo pelo conteúdo da embalagem
+• Leitura de mercado com cobertura, economia e qualidade dos dados
+• Exportação CSV
+
+Tecnologias usadas:
+• Python 3.11+
+• Streamlit
+• Pandas
+• RapidFuzz
+• Altair
+• Scrapers simultâneos com coleta paralela
+• Pytest, Ruff e Black
+• GitHub Actions para CI
+
+Também cuidei da parte que não aparece no print: arquitetura com adapters por plataforma, cache, tratamento de falhas por fonte, normalização de unidades e testes offline.
+
+O projeto está aberto para feedback e contribuições:
+Repositório: [link do repositório]
+Demo: [link da demo]
+
+#Python #Streamlit #DataEngineering #WebScraping #RetailTech #DataScience #DesenvolvimentoDeSoftware #Nordeste
